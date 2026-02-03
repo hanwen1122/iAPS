@@ -128,7 +128,8 @@ platform :ios do
       output_name: "iAPS.ipa",
       configuration: "Release",
       destination: 'generic/platform=iOS',
-      buildlog_path: 'buildlog'
+      buildlog_path: 'buildlog',
+      verbose:true
     )
 
     copy_artifacts(
