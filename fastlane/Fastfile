@@ -70,6 +70,9 @@ platform :ios do
     
     match(
       type: "appstore",
+      readonly: false,
+      keychain_name: "fastlane_tmp_keychain",
+      keychain_password: ENV["KEYCHAIN_PASSWORD"],
       git_basic_authorization: Base64.strict_encode64("#{GITHUB_REPOSITORY_OWNER}:#{GH_PAT}"),
       app_identifier: [
         "#{APP_IDENTIFIER}",
