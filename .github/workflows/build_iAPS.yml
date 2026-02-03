@@ -35,14 +35,6 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true  # 自动安装 Bundler 并缓存依赖
 
-       - name: Install dependencies & check environment
-        run: |
-          pod install --repo-update
-          xcodebuild -version
-          ruby --version
-          bundle --version
-
-      # 现在可以安全地使用 bundle 命令了
       - name: Update fastlane
         run: bundle update fastlane
 
