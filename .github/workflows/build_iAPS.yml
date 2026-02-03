@@ -26,9 +26,9 @@ jobs:
       AUTO_BUILD_ENABLED: ${{ steps.auto-build-enabled.outputs.auto_build }}
 
     steps:
-      - name: Run fastlane
+      - name: update fastlane
         run: |
-           bundle exec fastlane beta
+           bundle update fastlane
 
 
       - name: Is Auto Build Branch
