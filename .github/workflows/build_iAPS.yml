@@ -24,55 +24,18 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       AUTO_BUILD_ENABLED: ${{ steps.auto-build-enabled.outputs.auto_build }}
-   steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      # 👇 关键修复：初始化 Ruby 环境
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true  # 自动安装 Bundler 并缓存依赖
-
-      - name: Install dependencies & check environment
-        run: |
-          pod install --repo-update
-          xcodebuild -version
-          ruby --version
-          bundle --version
-
-      # 现在可以安全地使用 bundle 命令了
-      - name: Update fastlane
-        run: bundle update fastlane
-
-      - name: Run fastlane
-        run: bundle exec fastlane beta
+    steps:
 
       - name: Is Auto Build Branch
         id: auto-build-enabled
         run: |
           echo "auto_build=false" >> $GITHUB_OUTPUT
           if [ ! -z "${{ vars.AUTO_BUILD_BRANCHES }}" ]; then
-            if echo "${{ vars.AUTO_BUILD_BRANCHES }}" | grep -q ",${{ github.ref_name }},"; then
+            if echo ",${{ vars.AUTO_BUILD_BRANCHES }}," | grep -q ",${{ github.ref_name }},"; then
               echo "auto_build=true" >> $GITHUB_OUTPUT
             fi
           fi
-
-      - name: Upload fastlane logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: fastlane-logs
-          path: fastlane/buildlogs
-
-      - name: Start tmate session (on failure)
-        if: failure()
-        uses: mxschmitt/action-tmate@v3
-
-
-
-
 
       - name: Show Auto Build Status
         run: |
