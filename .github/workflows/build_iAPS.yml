@@ -26,7 +26,29 @@ jobs:
       AUTO_BUILD_ENABLED: ${{ steps.auto-build-enabled.outputs.auto_build }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # 👇 关键修复：初始化 Ruby 环境
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true  # 自动安装 Bundler 并缓存依赖
 
+       - name: Install dependencies & check environment
+        run: |
+          pod install --repo-update
+          xcodebuild -version
+          ruby --version
+          bundle --version
+
+      # 现在可以安全地使用 bundle 命令了
+      - name: Update fastlane
+        run: bundle update fastlane
+
+      - name: Run fastlane
+        run: bundle exec fastlane beta   
+        
 
       - name: Is Auto Build Branch
         id: auto-build-enabled
